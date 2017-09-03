@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Hadoop系列之（一）CentOS7安装配置及SSH无密码验证配置 - blueforks | pujing
+          SFTP实现Windows与Linux之间文件传输 - blueforks | pujing
         
     </title>
 
-    <link rel="canonical" href="http://yoursite-url/2017/08/29/Kubernates安装教程系统之一/">
+    <link rel="canonical" href="http://yoursite-url/2017/09/03/SecureRT-file-transport/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -90,16 +90,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                            
-                              <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                              <a class="tag" href="/tags/#SecureRT工具" title="SecureRT工具">SecureRT工具</a>
                             
                         </div>
-                        <h1>Hadoop系列之（一）CentOS7安装配置及SSH无密码验证配置</h1>
-                        <h2 class="subheading">大数据系列文章.</h2>
+                        <h1>SFTP实现Windows与Linux之间文件传输</h1>
+                        <h2 class="subheading">SecureRT工具使用</h2>
                         <span class="meta">
                             Posted by blueforks on
-                            2017-08-29
+                            2017-09-03
                         </span>
                     </div>
                 
@@ -217,59 +215,27 @@
                 post-container">
 
                 <blockquote>
-<p>Ported Theme of <a href="https://github.com/Huxpro/huxpro.github.io" target="_blank" rel="external">Hux Blog</a>, Thank <a href="https://github.com/Huxpro" target="_blank" rel="external">Huxpro</a> for designing such a flawless theme.</p>
-<p>This BeanTech theme created by <a href="http://beantech.org" target="_blank" rel="external">YuHsuan</a> modified from the original Porter <a href="http://kaijun.rocks/hexo-theme-huxblog/" target="_blank" rel="external">Kaijun</a></p>
+<p>很多时候我们想很方便的在windwos与Linux系统之间传互相传输文件，那么接下来我就教大家利用SecureRT工具在两个系统之间传输文件。在这里工具的下载就跳过了！</p>
 </blockquote>
-<h1><span id="live-demo"></span></h1>
+<h2><span id="背景">背景</span></h2>
 <hr>
-<p><img src="http://beantech.org/img/beantech-desktop.png" alt="BeanTech Desktop"></p>
-<h1><span id=""></span></h1>
-<p>—b<br>
-I publish the whole project for your convenience, so you can just follow the instruction down below, then you can easily customiz your own blog!</p>
-<p>Let’s begin!!!</p>
-<h2><span id="init">Init</span></h2>
+<p>有一台主机，安装了windows10，在其安装了vmware，然后安装了centos虚拟机。在windows10上安装SecureCRT来ssh连接centos虚拟机。一般在windows上面下载软件，然后通过vsftp上传到centos虚拟机上。但是这样非常麻烦，现在考虑使用sftp协议来直接传输</p>
+<h2><span id="方案">方案</span></h2>
 <hr>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/YenYuHsuan/hexo-theme-beantech.git ./hexo-beantech</div><div class="line"><span class="built_in">cd</span> hexo-beantech</div><div class="line">npm install</div></pre></td></tr></table></figure>
-<h2><span id="modify">Modify</span></h2>
+<p>使用SecureCRT软件ssh连接到centos虚拟机，然后在SecureCRT上面打开SFTP会话。</p>
+<h2><span id="sftp命令">SFTP命令</span></h2>
 <hr>
-<p>Modify <code>_config.yml</code> file with your own info.<br>
-Especially the section:</p>
-<h3><span id="deployment">Deployment</span></h3>
-<p>Replace to your own repo!</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">deploy:</span></div><div class="line"><span class="attr">  type:</span> <span class="string">git</span></div><div class="line"><span class="attr">  repo:</span> <span class="attr">https://github.com/&lt;yourAccount&gt;/&lt;repo&gt;</span></div><div class="line"><span class="attr">  branch:</span> <span class="string">&lt;your-branch&gt;</span></div></pre></td></tr></table></figure>
-<h3><span id="sidebar-settings">Sidebar settings</span></h3>
-<p>Copy your avatar image to <code>&lt;root&gt;/img/</code> and modify the <code>_config.yml</code>:</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="attr">sidebar:</span> <span class="literal">true</span>    <span class="comment"># whether or not using Sidebar.</span></div><div class="line"><span class="attr">sidebar-about-description:</span> <span class="string">"&lt;your description&gt;"</span></div><div class="line"><span class="attr">sidebar-avatar:</span> <span class="string">img/&lt;your</span> <span class="string">avatar</span> <span class="string">path&gt;</span></div></pre></td></tr></table></figure>
-<p>and activate your personal widget you like</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="attr">widgets:</span>         <span class="comment"># here are widget you can use, you can comment out</span></div><div class="line"><span class="bullet">-</span> <span class="string">featured-tags</span></div><div class="line"><span class="bullet">-</span> <span class="string">short-about</span></div><div class="line"><span class="bullet">-</span> <span class="string">recent-posts</span></div><div class="line"><span class="bullet">-</span> <span class="string">friends-blog</span></div><div class="line"><span class="bullet">-</span> <span class="string">archive</span></div><div class="line"><span class="bullet">-</span> <span class="string">category</span></div></pre></td></tr></table></figure>
-<p>if you want to add sidebar widget, please add at <code>layout/_widget</code>.</p>
-<h3><span id="signature-setup">Signature Setup</span></h3>
-<p>Copy your signature image to <code>&lt;root&gt;/img/signature</code> and modify the <code>_config.yml</code>:</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attr">signature:</span> <span class="literal">true</span>   <span class="comment"># show signature</span></div><div class="line"><span class="attr">signature-img:</span> <span class="string">img/signature/&lt;your-signature-ID&gt;</span></div></pre></td></tr></table></figure>
-<h3><span id="go-to-top-icon-setup">Go to top icon Setup</span></h3>
-<p>My icon is using iron man, you can change to your own icon at <code>css/image</code>.</p>
-<h3><span id="post-tag">Post tag</span></h3>
-<p>You can decide to show post tags or not.</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">home_posts_tag:</span> <span class="literal">true</span></div></pre></td></tr></table></figure>
-<p><img src="home_posts_tag-true.png" alt="home_posts_tag-true"></p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">home_posts_tag:</span> <span class="literal">false</span></div></pre></td></tr></table></figure>
-<p><img src="home_posts_tag-false.png" alt="home_posts_tag-false"></p>
-<h3><span id="markdown-render">Markdown render</span></h3>
-<p>My markdown render engine plugin is <a href="https://github.com/celsomiranda/hexo-renderer-markdown-it" target="_blank" rel="external">hexo-renderer-markdown-it</a>.</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Markdown-it config</span></div><div class="line"><span class="comment">## Docs: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki</span></div><div class="line"><span class="attr">markdown:</span></div><div class="line"><span class="attr">  render:</span></div><div class="line"><span class="attr">    html:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    xhtmlOut:</span> <span class="literal">false</span></div><div class="line"><span class="attr">    breaks:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    linkify:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    typographer:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    quotes:</span> <span class="string">'“”‘’'</span></div></pre></td></tr></table></figure>
-<p>and if you want to change the header anchor ‘ℬ’, you can go to <code>layout/post.ejs</code> to change it.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">async</span>(<span class="string">"https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        anchors.options = &#123;</div><div class="line">          visible: <span class="string">'hover'</span>,</div><div class="line">          placement: <span class="string">'left'</span>,</div><div class="line">          icon: ℬ <span class="comment">// this is the header anchor "unicode" icon</span></div><div class="line">        &#125;;</div></pre></td></tr></table></figure>
-<h2><span id="hexo-basics">Hexo Basics</span></h2>
+<p>进入到sftp命令窗口以后，就可以通过sftp命令来进行文件互传的操作。下面主要介绍一下sftp命令的<br>
+含义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">sftp&gt; help</div><div class="line">Available commands:</div><div class="line">ascii                          Set transfer mode to ASCII</div><div class="line">binary                         Set transfer mode to binary</div><div class="line">cd path                        Change remote directory to &apos;path&apos;</div><div class="line">lcd path                       Change local directory to &apos;path&apos;</div><div class="line">detail remote-path             Display system information about remote</div><div class="line">                                file or folder</div><div class="line">ldetail local-path             Display system information about local</div><div class="line">                                file or folder</div><div class="line">chgrp group path               Change group of file &apos;path&apos; to &apos;group&apos;</div><div class="line">chmod mode path                Change permissions of file &apos;path&apos; to &apos;mode&apos;</div><div class="line">chown owner path               Change owner of file &apos;path&apos; to &apos;owner&apos;</div><div class="line">exit                           Quit sftp</div><div class="line">help                           Display this help text</div><div class="line">include filename               Include commands from &apos;filename&apos;</div><div class="line">                                Alternate: &lt; filename</div><div class="line">get [-r][-a | -b] remote-path  Download file</div><div class="line">                                -r downloads directory recursively</div><div class="line">                                force ascii (-a) or binary (-b) mode</div><div class="line">ln [-s] existingpath linkpath  Hardlink / symlink remote file</div><div class="line">ls [options] [path]            Display remote directory listing</div><div class="line">lls [options] [path]           Display local directory listing</div><div class="line">mkdir path                     Create remote directory</div><div class="line">lmkdir path                    Create local directory</div><div class="line">mv oldpath newpath             Move remote file</div><div class="line">lmv oldpath newpath            Move local file</div><div class="line">open [user@]host[:port]        Connect to remote host</div><div class="line">put [-r][-a | -b] local-path   Upload file</div><div class="line">                                -r uploads directory recursively</div><div class="line">                                force ascii (-a) or binary (-b) mode</div><div class="line">pwd                            Display remote working directory</div><div class="line">lpwd                           Print local working directory</div><div class="line">quit                           Quit sftp</div><div class="line">rename oldname newname         Rename remote file</div><div class="line">lrename oldname newname        Rename local file</div><div class="line">rmdir path                     Remove remote directory</div><div class="line">lrmdir path                    Remove local directory</div><div class="line">rm path                        Delete remote file</div><div class="line">lrm path                       Delete local file</div><div class="line">su username                    Substitutes the current user</div><div class="line">                                This is only supported with VShell for </div><div class="line">                                Windows 3.5 or later.</div><div class="line">type [transfer-mode]           Display or set file transfer mode</div><div class="line">view remote-path               Download and open file</div><div class="line">version                        Display protocol version</div></pre></td></tr></table></figure>
+<h2><span id="从linux系统下载文件到windows系统">从Linux系统下载文件到Windows系统</span></h2>
 <hr>
-<p>Some hexo command:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo new post <span class="string">"&lt;post name&gt;"</span> <span class="comment"># you can change post to another layout if you want</span></div><div class="line">hexo clean &amp;&amp; hexo generate <span class="comment"># generate the static file</span></div><div class="line">hexo server <span class="comment"># run hexo in local environment</span></div><div class="line">hexo deploy <span class="comment"># hexo will push the static files automatically into the specific branch(gh-pages) of your repo!</span></div></pre></td></tr></table></figure>
-<h1><span id="have-fun-_">Have fun ^_^</span></h1>
-<hr>
-<!-- Place this tag in your head or just before your close body tag. -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-<!-- Place this tag where you want the button to render. -->
-<p>Please <a class="github-button" href="https://github.com/YenYuHsuan/hexo-theme-beantech" data-icon="octicon-star" aria-label="Star YenYuHsuan/hexo-theme-beantech on GitHub" target="_blank" rel="external">Star</a> this Project if you like it! <a class="github-button" href="https://github.com/YenYuHsuan" aria-label="Follow @YenYuHsuan on GitHub" target="_blank" rel="external">Follow</a> would also be appreciated!<br>
-Peace!</p>
+<ol>
+<li>在Windows系统下打开SecureRT,界面如下<img src="https://i.imgur.com/fLtjt6q.png" alt=""></li>
+<li>这里假设下载Linux根目录下的整个test文件到Windows系统的D盘根目录下,右键点击右边窗口的标签页，下拉菜单选择Connect SFTP Session,界面如下<img src="https://i.imgur.com/mflRahh.png" alt=""></li>
+<li>在SFTP窗口中进行命令操作</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">sftp&gt; ls  --查看linux</div><div class="line"><span class="built_in">test</span></div><div class="line">sftp&gt; lpwd --查看Windows系统当前目录</div><div class="line">C:/User/My/Documents</div><div class="line">sftp&gt; lcd D:/ --切换Windows目录到D盘</div><div class="line">sftp&gt; get -r <span class="built_in">test</span>/ --从Linux系统下载根目录下的<span class="built_in">test</span>文件夹</div><div class="line">Downloading text.txt from /root/<span class="built_in">test</span>/text.txt</div><div class="line">  100% 0 bytes      0 bytes/s 00:00:00  </div><div class="line">sftp&gt; lls --查看Windows系统D盘已下载了<span class="built_in">test</span>文件夹</div><div class="line"><span class="built_in">test</span></div><div class="line">sftp&gt; <span class="built_in">exit</span> --退出sftp</div></pre></td></tr></table></figure>
 
                 
 
@@ -309,7 +275,7 @@ Peace!</p>
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"></span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Init</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Modify</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">Deployment</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">Sidebar settings</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text">Signature Setup</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.4.</span> <span class="toc-nav-text">Go to top icon Setup</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.5.</span> <span class="toc-nav-text">Post tag</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.6.</span> <span class="toc-nav-text">Markdown render</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Hexo Basics</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Have fun ^_^</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">背景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">方案</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">SFTP命令</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">从Linux系统下载文件到Windows系统</span></a></li></ol>
         
         </div>
       </aside>
@@ -329,9 +295,7 @@ Peace!</p>
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                        
-                          <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                          <a class="tag" href="/tags/#SecureRT工具" title="SecureRT工具">SecureRT工具</a>
                         
                     </div>
                 </section>
@@ -346,11 +310,9 @@ Peace!</p>
                     
                         <li><a href="https://o-my-chenjian.com" target="_blank">chen jian</a></li>
                     
-                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                        <li><a href="https://thief.one/" target="_blank">nMask&#39;s Blog</a></li>
                     
-                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
-                    
-                        <li><a href="#" target="_blank">It Helps SEO</a></li>
+                        <li><a href="http://www.xiaoshuwu.net/" target="_blank">lxghost</a></li>
                     
                 </ul>
                 
@@ -366,8 +328,8 @@ Peace!</p>
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "your-disqus-ID";
-    var disqus_identifier = "http://yoursite-url/2017/08/29/Kubernates安装教程系统之一/";
-    var disqus_url = "http://yoursite-url/2017/08/29/Kubernates安装教程系统之一/";
+    var disqus_identifier = "http://yoursite-url/2017/09/03/SecureRT-file-transport/";
+    var disqus_url = "http://yoursite-url/2017/09/03/SecureRT-file-transport/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

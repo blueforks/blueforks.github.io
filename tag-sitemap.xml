@@ -3,14 +3,21 @@
 
     <url>
         <loc>http://yoursite-url/tags/Hexo/</loc>
-        <lastmod>2017-09-01T09:18:09.490Z</lastmod>
+        <lastmod>2017-08-29T08:35:45.472Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://yoursite-url/tags/Blog/</loc>
-        <lastmod>2017-09-01T09:18:09.490Z</lastmod>
+        <lastmod>2017-08-29T08:35:45.472Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/tags/SecureRT%E5%B7%A5%E5%85%B7/</loc>
+        <lastmod>2017-09-03T06:48:10.365Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
